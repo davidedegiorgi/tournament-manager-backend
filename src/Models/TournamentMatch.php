@@ -45,10 +45,6 @@ class TournamentMatch extends BaseModel
         // Determina il vincitore
         $winnerId = $team1Score > $team2Score ? $this->team1_id : $this->team2_id;
         
-        error_log("=== setResult ===");
-        error_log("Match ID: {$this->id}");
-        error_log("team1_score: $team1Score, team2_score: $team2Score");
-        error_log("Winner ID: $winnerId");
         
         // Aggiorna questa partita
         $updateResult = $this->update([
@@ -58,7 +54,6 @@ class TournamentMatch extends BaseModel
             'status' => 'completed',
         ]);
         
-        error_log("Update result: " . ($updateResult ? 'SUCCESS' : 'FAILED'));
         
         // Avanza il vincitore al round successivo
         $this->advanceWinner($winnerId);
@@ -74,24 +69,19 @@ class TournamentMatch extends BaseModel
      */
     private function advanceWinner(int $winnerId): void
     {
-        error_log("=== advanceWinner START ===");
-        error_log("Winner ID: $winnerId, Current Round: {$this->round}, Match Number: {$this->match_number}");
         
         $db = DB::getInstance();
         $tournament = Tournament::find($this->tournament_id);
         
         if (!$tournament) {
-            error_log("Tournament not found!");
             return;
         }
         
         $nextRound = $this->round + 1;
         $totalRounds = $tournament->getTotalRounds();
-        error_log("Total rounds: $totalRounds, Next round: $nextRound");
         
         // Se questa è la finale, non c'è un round successivo
         if ($this->round >= $totalRounds) {
-            error_log("This is the final match - updating tournament winner");
             // Aggiorna il torneo con il vincitore
             $tournament->update([
                 'winner_id' => $winnerId,
@@ -102,7 +92,6 @@ class TournamentMatch extends BaseModel
         
         // Trova la partita del round successivo dove deve andare il vincitore
         $nextMatchNumber = (int) ceil($this->match_number / 2);
-        error_log("Looking for next match - Round: $nextRound, Match Number: $nextMatchNumber");
         
         $nextMatches = $db->findWhere('matches', [
             'tournament_id' => $this->tournament_id,

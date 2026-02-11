@@ -144,21 +144,14 @@ class Tournament extends BaseModel
      */
     public function getTotalRounds(): int
     {
-        error_log("getTotalRounds - team_ids type: " . gettype($this->team_ids));
-        error_log("getTotalRounds - team_ids value: " . json_encode($this->team_ids));
-        error_log("getTotalRounds - is_array: " . (is_array($this->team_ids) ? 'true' : 'false'));
-        error_log("getTotalRounds - count: " . (is_array($this->team_ids) ? count($this->team_ids) : '0'));
-        error_log("getTotalRounds - empty check: " . (empty($this->team_ids) ? 'true' : 'false'));
         
         if (!is_array($this->team_ids) || count($this->team_ids) === 0) {
-            error_log("getTotalRounds - returning 0 (not array or empty)");
             return 0;
         }
         
         $count = count($this->team_ids);
         $rounds = (int) log($count, 2);
         
-        error_log("getTotalRounds - count: $count, rounds: $rounds");
         
         return $rounds;
     }

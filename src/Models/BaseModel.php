@@ -75,7 +75,6 @@ abstract class BaseModel
             }
             
             if ($hasRequiredFields && !$this->validate($data)) {
-                error_log("Validation failed in update");
                 return false;
             }
         }
@@ -89,8 +88,8 @@ abstract class BaseModel
             return true;
         }
         
-        error_log("DB update returned false/null");
         return false;
+    return false;
     }
 
     public function delete(): bool
