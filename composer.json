@@ -1,0 +1,17 @@
+{
+    "name": "tournament/manager-backend",
+    "description": "Tournament Management System Backend - PHP 8 REST API",
+    "type": "project",
+    "require": {
+        "php": "^8.0",
+        "pecee/simple-router": "^5.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    },
+    "scripts": {
+        "start": "php -S localhost:8000 -t public"
+    }
+}
