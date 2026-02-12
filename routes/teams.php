@@ -36,6 +36,8 @@ Router::get('/teams/{id}', function($id) {
 Router::post('/teams', function() {
     try {
         $request = new Request();
+
+        // Accetta solo il campo 'logo' come URL/path stringa
         $data = $request->only(['name', 'logo']);
         $team = Team::create($data);
     Response::success($team->toArray(), Response::HTTP_CREATED, 'La squadra è stata creata con successo')->send();
@@ -58,7 +60,6 @@ Router::put('/teams/{id}', function($id) {
     
     $request = new Request();
     $data = $request->only(['name', 'logo']);
-    
     if ($team->update($data)) {
         Response::success($team->toArray(), Response::HTTP_OK, 'Squadra aggiornata con successo')->send();
     } else {
