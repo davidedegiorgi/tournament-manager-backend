@@ -22,11 +22,11 @@ Router::get('/teams/{id}', function($id) {
     $team = Team::find((int)$id);
     
     if (!$team) {
-        Response::error('Team not found', Response::HTTP_NOT_FOUND)->send();
+        Response::error('Squadra non trovata', Response::HTTP_NOT_FOUND)->send();
     }
     
     if ($team->deleted_at) {
-        Response::error('Team has been deleted', Response::HTTP_NOT_FOUND)->send();
+        Response::error('Squadra eliminata', Response::HTTP_NOT_FOUND)->send();
     }
     
     Response::success($team->toArray())->send();
@@ -38,7 +38,7 @@ Router::post('/teams', function() {
         $request = new Request();
         $data = $request->only(['name', 'logo']);
         $team = Team::create($data);
-        Response::success($team->toArray(), Response::HTTP_CREATED, 'Team created successfully')->send();
+    Response::success($team->toArray(), Response::HTTP_CREATED, 'Squadra creata con successo')->send();
     } catch (\Exception $e) {
         Response::error($e->getMessage(), Response::HTTP_BAD_REQUEST)->send();
     }
@@ -49,20 +49,20 @@ Router::put('/teams/{id}', function($id) {
     $team = Team::find((int)$id);
     
     if (!$team) {
-        Response::error('Team not found', Response::HTTP_NOT_FOUND)->send();
+        Response::error('Squadra non trovata', Response::HTTP_NOT_FOUND)->send();
     }
     
     if ($team->deleted_at) {
-        Response::error('Cannot update deleted team', Response::HTTP_BAD_REQUEST)->send();
+        Response::error('Impossibile modificare una squadra eliminata', Response::HTTP_BAD_REQUEST)->send();
     }
     
     $request = new Request();
     $data = $request->only(['name', 'logo']);
     
     if ($team->update($data)) {
-        Response::success($team->toArray(), Response::HTTP_OK, 'Team updated successfully')->send();
+        Response::success($team->toArray(), Response::HTTP_OK, 'Squadra aggiornata con successo')->send();
     } else {
-        Response::error('Failed to update team', Response::HTTP_BAD_REQUEST, $team->getErrors())->send();
+        Response::error('Errore durante l\'aggiornamento della squadra', Response::HTTP_BAD_REQUEST, $team->getErrors())->send();
     }
 });
 
@@ -71,25 +71,25 @@ Router::delete('/teams/{id}', function($id) {
     $team = Team::find((int)$id);
     
     if (!$team) {
-        Response::error('Team not found', Response::HTTP_NOT_FOUND)->send();
+        Response::error('Squadra non trovata', Response::HTTP_NOT_FOUND)->send();
     }
     
     if ($team->deleted_at) {
-        Response::error('Team already deleted', Response::HTTP_BAD_REQUEST)->send();
+        Response::error('Squadra già eliminata', Response::HTTP_BAD_REQUEST)->send();
     }
     
     // Verifica se può essere eliminato
     if (!$team->canBeDeleted()) {
         Response::error(
-            'Cannot delete team that participated in completed tournaments. The team has been soft deleted instead.',
+            'Impossibile eliminare una squadra che ha partecipato a tornei completati. La squadra è stata eliminata in modalità soft.',
             Response::HTTP_BAD_REQUEST
         )->send();
     }
     
     // Soft delete
     if ($team->softDelete()) {
-        Response::success(null, Response::HTTP_OK, 'Team deleted successfully')->send();
+        Response::success(null, Response::HTTP_OK, 'Squadra eliminata con successo')->send();
     } else {
-        Response::error('Failed to delete team', Response::HTTP_INTERNAL_SERVER_ERROR)->send();
+        Response::error('Errore durante l\'eliminazione della squadra', Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
 });
