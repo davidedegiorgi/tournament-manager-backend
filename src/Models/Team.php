@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\DB;
+use App\Traits\WithValidate;
 
 class Team extends BaseModel
 {
@@ -14,9 +15,14 @@ class Team extends BaseModel
         'deleted_at',
     ];
     
-    protected array $rules = [
-        'name' => 'required|min:2|max:100',
-    ];
+        use WithValidate;
+    
+        protected static function validationRules(): array
+        {
+            return [
+                'name' => ['required', 'min:2', 'max:100'],
+            ];
+        }
 
     /**
      * Verifica se il team può essere eliminato (non ha partecipato a tornei passati)

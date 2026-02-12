@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Database\DB;
+use App\Traits\WithValidate;
 
 class TournamentMatch extends BaseModel
 {
@@ -20,11 +21,16 @@ class TournamentMatch extends BaseModel
         'status', // 'pending', 'completed'
     ];
     
-    protected array $rules = [
-        'tournament_id' => 'required|integer',
-        'round' => 'required|integer',
-        'match_number' => 'required|integer',
-    ];
+        use WithValidate;
+    
+        protected static function validationRules(): array
+        {
+            return [
+                'tournament_id' => ['required', 'integer'],
+                'round' => ['required', 'integer'],
+                'match_number' => ['required', 'integer'],
+            ];
+        }
 
     /**
      * Inserisce il risultato e avanza il vincitore

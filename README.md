@@ -3,10 +3,17 @@
 Backend PHP per la gestione di tornei di calcio con bracket ad eliminazione diretta. Permette creazione tornei, gestione squadre, generazione automatica dei match, registrazione risultati e calcolo del vincitore.
 
 ## Librerie principali
-- PHP 8.4+ (Laravel Herd)
-- pecee/simple-router per routing REST
-- PostgreSQL 12+ per persistenza dati
-- ORM custom `BaseModel` con metodi CRUD (`all`, `find`, `create`, `update`, `delete`)
+
+* PHP 8.x
+* PostgreSQL 15.x
+* PDO (gestione database)
+* Pecee SimpleRouter 5.x (routing REST)
+* Composer 2.x (gestione dipendenze)
+* PHP built-in server (sviluppo locale)
+* Architettura Routes → Services → Models
+* Configurazione CORS custom (`config/cors.php`)
+* Upload immagini/loghi (filesystem locale: `public/logos`)
+
 
 ## Struttura del Progetto
 
@@ -79,7 +86,7 @@ Le squadre inserite nel database sono:
 ### Gestione delle richieste e risposte
 - La classe `Response` gestisce tutte le risposte con `success()` e `error()`, includendo una risposta uniforme (`data`, `message`, `errors`) e stati HTTP (200, 201, 400, 404, 500)
 
-### Logica di business
+### Logica applicativo
 - I tornei generano bracket automatici: il backend calcola round e accoppiamenti
 - Quando un match riceve il risultato, il backend determina il vincitore e aggiorna il turno successivo
 - Endpoint come `/tournaments/{id}/matches` restituiscono tutte le partite del torneo
@@ -90,10 +97,7 @@ Le squadre inserite nel database sono:
 # Installa dipendenze
 composer install
 
-# Aggiorna autoload dopo aggiunta classi
-composer dump-autoload
-
-# Avvia server di sviluppo (PHP built-in)
+# Avvia server di sviluppo 
 php -S localhost:8000 -t public
 ```
 
@@ -111,4 +115,3 @@ php -S localhost:8000 -t public
 - `GET /api/matches/{id}` - Dettaglio partita
 - `PUT /api/matches/{id}` - Inserisci risultato
 
-Per tutti i dettagli consulta le route in `routes/index.php`.
