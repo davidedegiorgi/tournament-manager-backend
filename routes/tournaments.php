@@ -280,9 +280,7 @@ Router::delete('/tournaments/{id}', function($id) {
         Response::error('Tournament not found', Response::HTTP_NOT_FOUND)->send();
     }
     
-    if ($tournament->status === 'completed') {
-        Response::error('Cannot delete completed tournaments', Response::HTTP_BAD_REQUEST)->send();
-    }
+    // Ora è possibile eliminare anche i tornei completati
     
     if ($tournament->delete()) {
         Response::success(null, Response::HTTP_OK, 'Tournament deleted successfully')->send();
