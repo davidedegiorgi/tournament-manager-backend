@@ -38,7 +38,7 @@ Router::post('/teams', function() {
         $request = new Request();
         $data = $request->only(['name', 'logo']);
         $team = Team::create($data);
-    Response::success($team->toArray(), Response::HTTP_CREATED, 'Squadra creata con successo')->send();
+    Response::success($team->toArray(), Response::HTTP_CREATED, 'La squadra è stata creata con successo')->send();
     } catch (\Exception $e) {
         Response::error($e->getMessage(), Response::HTTP_BAD_REQUEST)->send();
     }

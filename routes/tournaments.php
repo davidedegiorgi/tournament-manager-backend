@@ -204,7 +204,7 @@ Router::post('/tournaments', function() {
         // Ricarica il torneo per avere i dati aggiornati
         $tournament = Tournament::find($tournament->id);
         
-        Response::success($tournament->toArray(), Response::HTTP_CREATED, 'Tournament created successfully')->send();
+    Response::success($tournament->toArray(), Response::HTTP_CREATED, 'Il torneo è stato creato con successo')->send();
     } catch (\Exception $e) {
         Response::error('Error creating tournament: ' . $e->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR)->send();
     }
